@@ -19,6 +19,7 @@ Os artigos publicados ficam em [`posts/pt-BR/`](posts/pt-BR/) e seguem o formato
 ## Artigos
 
 - [Por que comecei esta série sobre P2P](posts/pt-BR/2026-08-15-por-que-comecei-esta-serie-sobre-p2p.md)
+- [Por que existe NAT?](posts/pt-BR/2026-08-15-por-que-existe-nat.md)
 
 ## Perguntas e contribuições
 
