@@ -90,30 +90,56 @@ Com **address-dependent filtering**, o pacote só é aceito se vier de um endere
 
 Com **address-and-port-dependent filtering**, a origem precisa coincidir com o endereço e a porta exatos para os quais Murilo enviou. Ter enviado para `203.0.113.30:40000` não autoriza automaticamente pacotes vindos de `203.0.113.30:40001`.
 
-Suponha que Murilo tenha enviado apenas para Anderson em `203.0.113.30:40000`. O mesmo pacote de saída abre permissões diferentes, dependendo do filtering:
+Suponha que Murilo tenha enviado apenas para Anderson em `203.0.113.30:40000`. O mesmo pacote de saída abre permissões diferentes, dependendo do filtering.
+
+**Endpoint-independent filtering:**
 
 ```mermaid
 flowchart LR
   S[Servidor público<br/>203.0.113.20:40000]
   A1[Anderson<br/>203.0.113.30:40000]
   A2[Anderson<br/>203.0.113.30:40001]
+  F[Endpoint-independent<br/>filtering]
+  M[Murilo<br/>192.168.1.10:50000]
 
-  subgraph F[Filtro do NAT de Murilo]
-    direction TB
-    EIF[Endpoint-independent]
-    ADF[Address-dependent]
-    APDF[Address-and-port-dependent]
-  end
+  S -->|aceito| F
+  A1 -->|aceito| F
+  A2 -->|aceito| F
+  F --> M
+```
 
-  S -->|aceito| EIF
-  S -. bloqueado .-> ADF
-  S -. bloqueado .-> APDF
-  A1 -->|aceito| EIF
-  A1 -->|aceito| ADF
-  A1 -->|aceito| APDF
-  A2 -->|aceito| EIF
-  A2 -->|aceito| ADF
-  A2 -. bloqueado .-> APDF
+**Address-dependent filtering:**
+
+```mermaid
+flowchart LR
+  S[Servidor público<br/>203.0.113.20:40000]
+  A1[Anderson<br/>203.0.113.30:40000]
+  A2[Anderson<br/>203.0.113.30:40001]
+  X[Descartado]
+  F[Address-dependent<br/>filtering]
+  M[Murilo<br/>192.168.1.10:50000]
+
+  S -. bloqueado .-> X
+  A1 -->|aceito| F
+  A2 -->|aceito| F
+  F --> M
+```
+
+**Address-and-port-dependent filtering:**
+
+```mermaid
+flowchart LR
+  S[Servidor público<br/>203.0.113.20:40000]
+  A1[Anderson<br/>203.0.113.30:40000]
+  A2[Anderson<br/>203.0.113.30:40001]
+  X[Descartado]
+  F[Address-and-port-dependent<br/>filtering]
+  M[Murilo<br/>192.168.1.10:50000]
+
+  S -. bloqueado .-> X
+  A1 -->|aceito| F
+  A2 -. bloqueado .-> X
+  F --> M
 ```
 
 Mapping e filtering são eixos separados. Um roteador pode reutilizar a mesma porta externa para todos os destinos e ainda aplicar o filtro mais restritivo. Outro pode criar um mapeamento por destino e usar uma política de entrada diferente. Saber apenas que há NAT não permite deduzir o conjunto completo.
