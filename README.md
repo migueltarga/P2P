@@ -25,6 +25,7 @@ Os experimentos executáveis ficam em [`code/`](code/) e usam a data e o slug do
 - [Por que existe NAT?](posts/pt-BR/2026-08-15-por-que-existe-nat.md)
 - [Como o NAT muda a identidade de um pacote](posts/pt-BR/2026-08-16-como-o-nat-muda-a-identidade-de-um-pacote.md)
 - [Observando o NAT na prática com Rust](posts/pt-BR/2026-08-16-observando-o-nat-na-pratica-com-rust.md)
+- [Por que nem todo NAT se comporta igual](posts/pt-BR/2026-08-17-por-que-nem-todo-nat-se-comporta-igual.md)
 
 ## Perguntas e contribuições
 
