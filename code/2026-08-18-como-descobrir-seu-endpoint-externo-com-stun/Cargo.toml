@@ -1,0 +1,8 @@
+[package]
+name = "stun-hole-punching"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+stunclient = "0.4"
