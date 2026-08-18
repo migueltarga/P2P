@@ -1,0 +1,9 @@
+[package]
+name = "udp-hole-punching"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "hole-punch"
+path = "src/main.rs"
