@@ -26,6 +26,7 @@ Os experimentos executáveis ficam em [`code/`](code/) e usam a data e o slug do
 - [Como o NAT muda a identidade de um pacote](posts/pt-BR/2026-08-16-como-o-nat-muda-a-identidade-de-um-pacote.md)
 - [Observando o NAT na prática com Rust](posts/pt-BR/2026-08-16-observando-o-nat-na-pratica-com-rust.md)
 - [Por que nem todo NAT se comporta igual](posts/pt-BR/2026-08-17-por-que-nem-todo-nat-se-comporta-igual.md)
+- [Como funciona UDP hole punching](posts/pt-BR/2026-08-18-como-funciona-udp-hole-punching.md)
 
 ## Perguntas e contribuições
 
