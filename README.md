@@ -28,6 +28,7 @@ Os experimentos executáveis ficam em [`code/`](code/) e usam a data e o slug do
 - [Por que nem todo NAT se comporta igual](posts/pt-BR/2026-08-17-por-que-nem-todo-nat-se-comporta-igual.md)
 - [Como funciona UDP hole punching](posts/pt-BR/2026-08-18-como-funciona-udp-hole-punching.md)
 - [Como descobrir seu endpoint externo com STUN](posts/pt-BR/2026-08-18-como-descobrir-seu-endpoint-externo-com-stun.md)
+- [Como dois peers se apresentam](posts/pt-BR/2026-08-19-como-dois-peers-se-apresentam.md)
 
 ## Perguntas e contribuições
 
