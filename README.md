@@ -30,6 +30,7 @@ Os experimentos executáveis ficam em [`code/`](code/) e usam a data e o slug do
 - [Como descobrir seu endpoint externo com STUN](posts/pt-BR/2026-08-18-como-descobrir-seu-endpoint-externo-com-stun.md)
 - [Como dois peers se apresentam](posts/pt-BR/2026-08-19-como-dois-peers-se-apresentam.md)
 - [Conectando dois peers sem copiar endpoints](posts/pt-BR/2026-08-19-conectando-dois-peers-sem-copiar-endpoints.md)
+- [ICE: testar caminhos em vez de adivinhar o NAT](posts/pt-BR/2026-08-20-ice-testar-caminhos-em-vez-de-adivinhar-o-nat.md)
 
 ## Perguntas e contribuições
 
