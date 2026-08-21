@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - posts/*/*.md
+      - .github/workflows/release-articles.yml
 
 permissions:
   contents: write
@@ -17,7 +18,7 @@ jobs:
       - name: Check out the published commit
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Create releases for new articles
         env:
@@ -25,15 +26,16 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           COMMIT: ${{ github.sha }}
         run: |
-          git diff-tree --no-commit-id --name-only -r "$COMMIT" -- 'posts/*/*.md' |
+          find posts -mindepth 2 -maxdepth 2 -type f -name '*.md' -print |
             while IFS= read -r article; do
-              [ -n "$article" ] || continue
+              published_commit=$(git log --diff-filter=A --format='%H' --reverse -- "$article" | head -n 1)
+              [ -n "$published_commit" ] || continue
 
               locale="${article#posts/}"
               locale="${locale%%/*}"
               slug="${article#posts/"$locale"/}"
               slug="${slug%.md}"
-              commit_short="${COMMIT:0:7}"
+              commit_short="${published_commit:0:7}"
               tag="${locale}-${commit_short}"
 
               if gh release view "$tag" --repo "$REPOSITORY" >/dev/null 2>&1; then
@@ -41,8 +43,8 @@ jobs:
                 continue
               fi
 
-              title="$(sed -n 's/^title: *["'"']\(.*\)["'"']$/\1/p' "$article" | head -n 1)"
-              description="$(sed -n 's/^description: *["'"']\(.*\)["'"']$/\1/p' "$article" | head -n 1)"
+              title="$(sed -n 's/^title: "\(.*\)"$/\1/p' "$article" | head -n 1)"
+              description="$(sed -n 's/^description: "\(.*\)"$/\1/p' "$article" | head -n 1)"
 
               {
                 printf '%s\n\n' "${description:-Novo artigo publicado na série sobre P2P.}"
@@ -51,7 +53,7 @@ jobs:
 
               gh release create "$tag" \
                 --repo "$REPOSITORY" \
-                --target "$COMMIT" \
+                --target "$published_commit" \
                 --title "${title:-$slug}" \
                 --notes-file release-notes.md
             done
