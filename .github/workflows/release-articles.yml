@@ -1,0 +1,57 @@
+name: Release published articles
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - posts/*/*.md
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the published commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Create releases for new articles
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          COMMIT: ${{ github.sha }}
+        run: |
+          git diff-tree --no-commit-id --name-only -r "$COMMIT" -- 'posts/*/*.md' |
+            while IFS= read -r article; do
+              [ -n "$article" ] || continue
+
+              locale="${article#posts/}"
+              locale="${locale%%/*}"
+              slug="${article#posts/"$locale"/}"
+              slug="${slug%.md}"
+              commit_short="${COMMIT:0:7}"
+              tag="${locale}-${commit_short}"
+
+              if gh release view "$tag" --repo "$REPOSITORY" >/dev/null 2>&1; then
+                echo "Release $tag already exists; skipping $article."
+                continue
+              fi
+
+              title="$(sed -n 's/^title: *["'"']\(.*\)["'"']$/\1/p' "$article" | head -n 1)"
+              description="$(sed -n 's/^description: *["'"']\(.*\)["'"']$/\1/p' "$article" | head -n 1)"
+
+              {
+                printf '%s\n\n' "${description:-Novo artigo publicado na série sobre P2P.}"
+                printf '[Ler o artigo](https://github.com/%s/blob/%s/%s)\n' "$REPOSITORY" "$tag" "$article"
+              } > release-notes.md
+
+              gh release create "$tag" \
+                --repo "$REPOSITORY" \
+                --target "$COMMIT" \
+                --title "${title:-$slug}" \
+                --notes-file release-notes.md
+            done
